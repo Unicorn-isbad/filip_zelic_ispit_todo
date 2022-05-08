@@ -1,0 +1,79 @@
+﻿@model IEnumerable<Ispit.Todo.Models.TodoTask>
+@{
+    var ActiveTasks = Model.Where(m => m.status == false).ToList();
+}
+
+<div class="row">
+    @if(!String.IsNullOrWhiteSpace(ViewBag.Message))
+    {
+        <p>@ViewBag.Message</p>
+    }
+</div>
+
+
+
+
+<div class="row">
+    <div class="col navbar-collapse collapse d-sm-inline-flex justify-content-between">
+        <ul class="nav nav-pills flex-grow-1" >
+            <li class="nav-item" style="padding:5px">
+                <form method="post" asp-controller="List" asp-action="Create">
+                    <input type="text" name="name" />
+                    <input class="btn btn-outline-success" style="padding:5px" type="submit" value="Add List" />
+                </form>
+            </li>
+            @foreach (var item in ViewBag.Lists as List<Ispit.Todo.Models.TodoList>)
+            {
+                var selected = (item.Id == ViewBag.CurrentList) ? "active" : "inactive";
+                <li class="nav-item" style="padding:5px">
+                    <a class="nav-link @selected" aria-current="page" asp-action="Index" asp-route-list_id="@item.Id">@item.Name</a>
+                </li>
+            }
+        </ul>
+        @if (ViewBag.Lists.Count > 0)
+        {
+            <a class="btn btn-danger" asp-controller="List" asp-action="Delete" asp-route-id="@ViewBag.CurrentList" onclick="return confirm('Are you sure?')" >Delete curent list</a>
+        }
+    </div>
+</div>
+
+
+
+
+@if (ViewBag.Lists.Count > 0)
+{
+<hr />
+<form method="post" asp-controller="Task" asp-action="Create">
+    <div class="row">
+        <div class="col">
+            <input type="hidden" name="list_id" value="@ViewBag.CurrentList" />
+            <input type="text" name="create_details" />
+            <input class="btn btn-outline-success" style="padding:5px" type="submit" value="Add task" />
+        </div>
+    </div>
+</form>
+<hr />
+<div class="row">
+    <div class="col flex justify-content-between">
+        <table class="table table-hover ">
+            <tbody>
+                @foreach (var item in ActiveTasks)
+                {
+                    <tr>
+                        <td align="left">
+                            <form method="post" asp-controller="Task" asp-action="ChangeStatus">
+                                <input type="hidden" name="list_id" value="@ViewBag.CurrentList" />
+                                <input type="checkbox" name="id" value="@item.Id" onchange="this.form.submit();" title="Completed" />
+                            </form>
+                        </td>
+                        <td align="center">@Html.DisplayFor(i => item.Details)</td>
+                        <td align="right">
+                            <a class="btn btn-danger" asp-controller="Task" asp-action="Delete" asp-route-id="@item.Id" asp-route-list_id="@ViewBag.CurrentList" onclick="return confirm('Are you sure?')" >Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+}
