@@ -31,7 +31,7 @@ namespace Ispit.Todo.Controllers
             {
                 if (String.IsNullOrEmpty(create_details))
                 {
-                    throw new Exception(message: "Cannot create empty task!");
+                    throw new Exception(message: "Cannot create empty task.");
                 }
                 TodoTask new_task = new TodoTask()
                 {
@@ -55,12 +55,12 @@ namespace Ispit.Todo.Controllers
             {
                 if (id == 0)
                 {
-                    throw new Exception(message: "Invalid id!");
+                    throw new Exception(message: "Invalid id.");
                 }
                 var task = _context.Tasks.FirstOrDefault(t => t.Id == id);
                 if (task == null)
                 {
-                    throw new Exception(message: "Task not found!");
+                    throw new Exception(message: "Task not found.");
                 }
                 _context.Tasks.Remove(task);
                 _context.SaveChanges();
@@ -78,12 +78,12 @@ namespace Ispit.Todo.Controllers
             {
                 if (id == 0)
                 {
-                    throw new Exception(message: "Invalid id!");
+                    throw new Exception(message: "Invalid id.");
                 }
                 var task = _context.Tasks.FirstOrDefault(t => t.Id == id);
                 if (task == null)
                 {
-                    throw new Exception(message: "Task not found!");
+                    throw new Exception(message: "Task not found.");
                 }
                 task.status = !task.status;
                 _context.Tasks.Update(task);

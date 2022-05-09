@@ -43,7 +43,7 @@ namespace Ispit.Todo.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TodoLists");
+                    b.ToTable("TodoLists", (string)null);
                 });
 
             modelBuilder.Entity("Ispit.Todo.Models.TodoTask", b =>
@@ -69,7 +69,7 @@ namespace Ispit.Todo.Data.Migrations
 
                     b.HasIndex("ListId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Tasks", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

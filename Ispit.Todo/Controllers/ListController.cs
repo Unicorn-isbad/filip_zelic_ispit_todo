@@ -21,6 +21,10 @@ namespace Ispit.Todo.Controllers
         {
             try
             {
+                if (String.IsNullOrEmpty(name))
+                {
+                    throw new Exception(message: "Enter list name.");
+                }
                 var new_list = new TodoList() 
                 {
                     Name = name,
@@ -41,17 +45,16 @@ namespace Ispit.Todo.Controllers
             {
                 if (id == 0)
                 {
-                    throw new Exception(message: "Invalid id!");
+                    throw new Exception(message: "Invalid id.");
                 }
                 var list = _context.TodoLists.FirstOrDefault(l => l.Id == id);
                 if (list == null)
                 {
-                    throw new Exception(message: "List not found!");
+                    throw new Exception(message: "List not found.");
                 }
                 _context.TodoLists.Remove(list);
                 _context.SaveChanges();
-                var list_id = (_context.TodoLists.Count() > 0) ? _context.TodoLists.First().Id : 0;
-                return RedirectToAction("Index", "Task", new { msg = "List deleted", list_id = list_id });
+                return RedirectToAction("Index", "Task", new { msg = "List deleted" });
             }
             catch (Exception error)
             {
