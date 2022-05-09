@@ -18,9 +18,10 @@ namespace Ispit.Todo.Controllers
         }
         public IActionResult Index(string msg = "", int list_id = 0)
         {
-            list_id = (list_id == 0 && _context.TodoLists.Count() > 0) ? _context.TodoLists.First().Id : list_id;
+            var user_lists = _context.TodoLists.Where(l => l.UserId == _user.GetUserId(User)).ToList();
+            list_id = (list_id == 0 && user_lists.Count() > 0) ? _context.TodoLists.First().Id : list_id;
             ViewBag.Message = msg;
-            ViewBag.Lists = _context.TodoLists.Where(l=>l.UserId == _user.GetUserId(User)).ToList();
+            ViewBag.Lists = user_lists;
             ViewBag.CurrentList = list_id;
             return View(_context.Tasks.Where(t=>t.ListId == list_id).ToList());
         }
